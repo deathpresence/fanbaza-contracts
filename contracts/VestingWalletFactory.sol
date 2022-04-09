@@ -10,8 +10,12 @@ contract VestingWalletFactory is Ownable {
 
     event VestingWalletCreated(address indexed vestingWalletAddress);
 
-    function registry() public view returns(address[] memory) {
+    function registry() public view returns (address[] memory) {
         return _registry;
+    }
+
+    function vestingWallet(uint256 index) public view returns (address) {
+        return _registry[index];
     }
 
     function createVestingWallet(
@@ -20,14 +24,14 @@ contract VestingWalletFactory is Ownable {
         uint64 start,
         uint16[] calldata cliff
     ) external onlyOwner returns (address) {
-        VestingWallet vestingWallet = new VestingWallet(
+        VestingWallet newVestingWallet = new VestingWallet(
             token,
             beneficiary,
             start,
             cliff
         );
 
-        address vestingWalletAddress = address(vestingWallet);
+        address vestingWalletAddress = address(newVestingWallet);
 
         _registry.push(vestingWalletAddress);
 

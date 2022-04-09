@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.9;
 
-import "./entities/ERC20.sol";
-import "./entities/ERC20Permit.sol";
+import "../entities/ERC20.sol";
+import "../entities/ERC20Permit.sol";
 
 contract MockToken is ERC20, ERC20Permit {
     constructor(
