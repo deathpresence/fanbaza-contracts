@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts v4.4.1 (finance/VestingWallet.sol)
+
 pragma solidity ^0.8.0;
 
 import "./libraries/SafeERC20.sol";
@@ -7,9 +7,9 @@ import "./libraries/Address.sol";
 
 /**
  * @title VestingWallet
- * @dev This contract handles the vesting of Eth and ERC20 tokens for a given beneficiary. Custody of multiple tokens
+ * @dev This contract handles the vesting of ERC20 tokens for a given beneficiary. Custody of multiple tokens
  * can be given to this contract, which will release the token to the beneficiary following a given vesting schedule.
- * The vesting schedule is customizable through the {vestedAmount} function.
+ * The vesting schedule can be set through the {cliff_} argument in the constructor.
  *
  * Any token transferred to this contract will follow the vesting schedule as if they were locked from the beginning.
  * Consequently, if the vesting has already started, any amount of tokens sent to this contract will (at least partly)
@@ -20,14 +20,14 @@ contract VestingWallet {
 
     event TokenReleased(uint256 amount);
 
-    uint64 public constant MONTH = 30 days;
+    uint64 public constant MONTH = 30 days; // 1 month duration
     uint64 public constant TOTAL_CLIFF_SIZE = 10000; // 100%
 
     address private immutable _token; // ERC20 token address
     address private immutable _beneficiary; // Beneficiary address
     uint64 private immutable _start; // Start timestamp in seconds
 
-    uint16[] private _cliff;
+    uint16[] private _cliff; // Representation of vesting cliff in percent per month
     uint256 private _released; // Released amount of tokens
 
     constructor(
@@ -124,7 +124,7 @@ contract VestingWallet {
         pure
         returns (uint256)
     {
-        require(_share <= 10000, "VestingWallet: share is greater than 100%");
+        require(_share <= 10000, "VestingWallet: total share is greater than 100%");
 
         return (_amount / 10000) * _share;
     }
