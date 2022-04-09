@@ -8,7 +8,7 @@ import "./entities/Ownable.sol";
 contract USTFactory is Ownable {
     address[] private _tokens;
 
-    event TokenCreated(address indexed token, uint256 amount);
+    event TokenCreated(address indexed tokenAddress, uint256 amount);
 
     function tokens() public view returns (address[] memory) {
         return _tokens;
