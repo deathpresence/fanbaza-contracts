@@ -49,14 +49,16 @@ contract VestingWallet {
         _cliff = cliff_;
     }
 
-    receive() external payable {}
-
     function beneficiary() public view returns (address) {
         return _beneficiary;
     }
 
     function start() public view returns (uint256) {
         return _start;
+    }
+
+    function cliff() public view returns (uint16[] memory) {
+        return _cliff;
     }
 
     function released() public view returns (uint256) {
@@ -124,7 +126,10 @@ contract VestingWallet {
         pure
         returns (uint256)
     {
-        require(_share <= 10000, "VestingWallet: total share is greater than 100%");
+        require(
+            _share <= 10000,
+            "VestingWallet: total share is greater than 100%"
+        );
 
         return (_amount / 10000) * _share;
     }
