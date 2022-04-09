@@ -7,13 +7,12 @@ import "./libraries/Address.sol";
 
 /**
  * @title VestingWallet
- * @dev This contract handles the vesting of ERC20 tokens for a given beneficiary. Custody of multiple tokens
+ * @author Alexey Eramasov
+ * @dev This contract handles the vesting of ERC20 token for a given beneficiary. Custody of token
  * can be given to this contract, which will release the token to the beneficiary following a given vesting schedule.
  * The vesting schedule can be set through the {cliff_} argument in the constructor.
  *
- * Any token transferred to this contract will follow the vesting schedule as if they were locked from the beginning.
- * Consequently, if the vesting has already started, any amount of tokens sent to this contract will (at least partly)
- * be immediately releasable.
+ * Token specified to this contract will follow the vesting schedule as if it was locked from the beginning.
  */
 contract VestingWallet {
     using SafeERC20 for IERC20;
@@ -28,8 +27,11 @@ contract VestingWallet {
     uint64 private immutable _start; // Start timestamp in seconds
 
     uint16[] private _cliff; // Representation of vesting cliff in percent per month
-    uint256 private _released; // Released amount of tokens
+    uint256 private _released; // Released amount of the token
 
+    /**
+     * @dev Sets the values of the {token}, {beneficiary}, {start} and {cliff}
+     */
     constructor(
         address token_,
         address beneficiary_,
@@ -49,29 +51,47 @@ contract VestingWallet {
         _cliff = cliff_;
     }
 
+    /**
+     * @dev Returns beneficiary address
+     */
     function beneficiary() public view returns (address) {
         return _beneficiary;
     }
 
+    /**
+     * @dev Returns start timestamp
+     */
     function start() public view returns (uint256) {
         return _start;
     }
 
+    /**
+     * @dev Returns vesting cliff array
+     */
     function cliff() public view returns (uint16[] memory) {
         return _cliff;
     }
 
+    /**
+     * @dev Returns released amount of the token
+     */
     function released() public view returns (uint256) {
         return _released;
     }
 
+    /**
+     * @dev Returns reserves of token the locked in the contract
+     */
     function reserves() public view returns (uint256) {
         return IERC20(_token).balanceOf(address(this));
     }
 
+    /**
+     * @dev Releases locked token according to vesting schedule
+     */
     function release() external {
         require(
-            start() < block.timestamp,
+            _start < block.timestamp,
             "VestingWallet: vesting is not started yet"
         );
 
@@ -90,12 +110,17 @@ contract VestingWallet {
             reserves()
         );
 
-        IERC20(_token).safeTransfer(beneficiary(), releasable);
+        IERC20(_token).safeTransfer(_beneficiary, releasable);
         _released += releasable;
 
         emit TokenReleased(releasable);
     }
 
+    /**
+     * @dev Checks vesting cliff for required length
+     * @param cliff_ Representation of vesting cliff
+     * @return bool Result of equality check
+     */
     function _checkCliff(uint16[] memory cliff_) internal pure returns (bool) {
         uint16 total;
         for (uint16 i = 0; i < cliff_.length; i++) {
@@ -105,6 +130,11 @@ contract VestingWallet {
         return total == TOTAL_CLIFF_SIZE;
     }
 
+    /**
+     * @dev Calculates released share and current interval
+     * @return releasedShare Total share that already released by now from start
+     * @return i Current interval in cliff
+     */
     function _calculateReleasedShare() internal view returns (uint16, uint16) {
         uint16 releasedShare = 0;
         uint256 accumulatedDate = start();
@@ -121,6 +151,12 @@ contract VestingWallet {
         return (releasedShare, i);
     }
 
+    /**
+     * @dev Calculates how many reserves must be released for a given share
+     * @param _share Some share of total reserves
+     * @param _amount  Total amount of the token reserves
+     * @return uint256 Calculation result
+     */
     function _calculateReservesOnShare(uint32 _share, uint256 _amount)
         internal
         pure
