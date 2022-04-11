@@ -163,10 +163,10 @@ contract VestingWallet {
         returns (uint256)
     {
         require(
-            _share <= 10000,
+            _share <= TOTAL_CLIFF_SIZE,
             "VestingWallet: total share is greater than 100%"
         );
 
-        return (_amount / 10000) * _share;
+        return (_amount / TOTAL_CLIFF_SIZE) * _share;
     }
 }
