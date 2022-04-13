@@ -19,12 +19,12 @@ contract VestingWallet {
 
     event TokenReleased(uint256 amount);
 
-    uint64 public constant MONTH = 30 days; // 1 month duration
-    uint64 public constant TOTAL_CLIFF_SIZE = 10000; // 100%
+    uint256 public constant MONTH = 30 days; // 1 month duration
+    uint256 public constant TOTAL_CLIFF_SIZE = 10000; // 100%
 
     address private immutable _token; // ERC20 token address
     address private immutable _beneficiary; // Beneficiary address
-    uint64 private immutable _start; // Start timestamp in seconds
+    uint256 private immutable _start; // Start timestamp in seconds
 
     uint16[] private _cliff; // Representation of vesting cliff in percent per month
     uint256 private _released; // Released amount of the token
@@ -35,7 +35,7 @@ contract VestingWallet {
     constructor(
         address token_,
         address beneficiary_,
-        uint64 start_,
+        uint256 start_,
         uint16[] memory cliff_
     ) {
         require(token_ != address(0), "VestingWallet: token is zero addres");
@@ -47,7 +47,7 @@ contract VestingWallet {
 
         _token = token_;
         _beneficiary = beneficiary_;
-        _start = start_ == 0 ? uint64(block.timestamp) : start_;
+        _start = start_ == 0 ? block.timestamp : start_;
         _cliff = cliff_;
     }
 
@@ -137,8 +137,8 @@ contract VestingWallet {
      */
     function _calculateReleasedShare() internal view returns (uint16, uint16) {
         uint16 releasedShare = 0;
-        uint256 accumulatedDate = start();
         uint16 i = 0;
+        uint256 accumulatedDate = start();
 
         for (i; i < _cliff.length; i++) {
             accumulatedDate += MONTH;
