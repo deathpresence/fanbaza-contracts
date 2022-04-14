@@ -52,6 +52,13 @@ contract VestingWallet {
     }
 
     /**
+     * @dev Returns token address
+     */
+    function token() public view returns (address) {
+        return _token;
+    }
+
+    /**
      * @dev Returns beneficiary address
      */
     function beneficiary() public view returns (address) {
