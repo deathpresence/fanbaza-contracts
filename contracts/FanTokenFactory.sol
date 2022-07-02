@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.15;
 
 import "./FanToken.sol";
 import "./entities/Ownable.sol";
 
-contract USTFactory is Ownable {
+contract FanTokenFactory is Ownable {
     address[] private _tokens;
 
     event TokenCreated(address indexed tokenAddress, uint256 amount);
@@ -23,7 +23,7 @@ contract USTFactory is Ownable {
         string calldata _symbol,
         uint256 _amount
     ) external onlyOwner returns (address) {
-        FanToken newToken = new FanToken(_name, _symbol, _amount);
+        FanToken newToken = new FanToken(_name, _symbol, _amount, owner());
 
         address tokenAddress = address(newToken);
 

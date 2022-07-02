@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.15;
 
 import "./entities/ERC20.sol";
 import "./entities/ERC20Permit.sol";
