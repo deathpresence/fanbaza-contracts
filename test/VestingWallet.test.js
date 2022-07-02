@@ -21,7 +21,7 @@ describe("VestingWallet", function () {
         mockToken.address,
         beneficiary.address,
         Math.ceil(Date.now() / 1000),
-        [1000, 3000, 6000]l
+        [1000, 3000, 6000]
       );
       await mockToken.deployed();
     });
