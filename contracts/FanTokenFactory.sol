@@ -21,12 +21,15 @@ contract FanTokenFactory is Ownable {
     function createFanToken(
         string calldata _name,
         string calldata _symbol,
-        uint256 _amount
+        uint256 _amount,
+        address _to
     ) external onlyOwner returns (address) {
-        FanToken newToken = new FanToken(_name, _symbol, _amount, owner());
+        if (_to == address(0)) {
+            _to = owner();
+        }
+        FanToken newToken = new FanToken(_name, _symbol, _amount, _to);
 
         address tokenAddress = address(newToken);
-
         _tokens.push(tokenAddress);
 
         emit TokenCreated(tokenAddress, newToken.totalSupply());
