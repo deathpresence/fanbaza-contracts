@@ -5,6 +5,11 @@ pragma solidity ^0.8.9;
 import "./VestingWallet.sol";
 import "./entities/Ownable.sol";
 
+/**
+ * @title VestingWalletFactory
+ * @author Alexey Eramasov
+ * @dev This contract handles the creation and registration of new VestingWallet contracts.
+ */
 contract VestingWalletFactory is Ownable {
     address[] private _registry;
 

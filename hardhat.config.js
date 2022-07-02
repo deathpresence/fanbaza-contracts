@@ -5,6 +5,14 @@ require("@nomiclabs/hardhat-waffle");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
+
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -22,8 +30,9 @@ module.exports = {
     hardhat: {
       initialBaseFeePerGas: 0,
     },
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    mainnet: {
+      chainId: 56,
+      url: "https://bsc-dataseed.binance.org/",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
