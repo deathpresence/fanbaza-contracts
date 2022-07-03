@@ -6,7 +6,7 @@ import { FanTokenFactory__factory, FanToken__factory, VestingWalletFactory__fact
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployments, getNamedAccounts, ethers } = hre;
   const { deploy } = deployments;
-  const { deployer } = await getNamedAccounts();
+  const { deployer, beneficiary } = await getNamedAccounts();
   const signer = ethers.provider.getSigner(deployer);
 
   const FanTokenFactoryDeployment = await deployments.get(
@@ -35,8 +35,9 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     console.log(
       `Token ${token.symbol} created through FanTokenFactory on: ${tokenAddress}`
     );
-
-    tx = await vestingWalletFactory.createVestingWallet(tokenAddress, VESTING_WALLETS[key].beneficiary, VESTING_WALLETS[key].start, VESTING_WALLETS[key].schedule)
+    // TEMPORARY
+    tx = await vestingWalletFactory.createVestingWallet(tokenAddress, beneficiary, Math.ceil(Date.now() / 1000)
+      , VESTING_WALLETS[key].schedule)
     receipt = await tx.wait();
     event = receipt.events?.find(
       (event) => event.event === "VestingWalletCreated"

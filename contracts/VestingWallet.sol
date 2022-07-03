@@ -19,7 +19,7 @@ contract VestingWallet {
 
     event TokenReleased(uint256 amount);
 
-    uint256 public constant MONTH = 30 days; // 1 month duration
+    uint256 public constant MONTH = 2628288 seconds; // 1 month duration
     uint256 public constant TOTAL_CLIFF_SIZE = 10000; // 100%
 
     address private immutable _token; // ERC20 token address
