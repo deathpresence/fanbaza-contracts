@@ -32,7 +32,7 @@ export default defineComponent({
       console.log("reserves", reserves.toString())
 
       dataLabels.value = cliff.map((item, index) => {
-        return new Date((start.toNumber() + (2628288 * index)) * 1000).toLocaleDateString()
+        return new Date((start.toNumber() + (2628288 * (index + 1))) * 1000).toLocaleDateString()
       });
 
       let acc = ethers.BigNumber.from(0)
@@ -79,13 +79,14 @@ export default defineComponent({
         },
         title: {
           display: true,
-          text: "Chart.js Line Chart",
+          text: "Vesting chart",
         },
       },
     }));
 
     const { lineChartProps, lineChartRef } = useLineChart({
       chartData: testData,
+      height: 500,
       options,
     });
 
