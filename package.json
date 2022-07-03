@@ -6,6 +6,7 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "coverage": "npx hardhat coverage",
+    "dashboard": "vite",
     "typechain": "hardhat typechain",
     "node": "hardhat node",
     "deploy:hardhat": "hardhat --network hardhat deploy",
@@ -44,7 +45,15 @@
     "typechain": "^8.1.0"
   },
   "dependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "@vue/tsconfig": "^0.1.3",
+    "chart.js": "^3.8.0",
+    "npm-run-all": "^4.1.5",
     "ts-node": "^10.8.2",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vite": "^2.9.12",
+    "vue": "^3.2.37",
+    "vue-chart-3": "^3.1.8",
+    "vue-tsc": "^0.38.1"
   }
 }

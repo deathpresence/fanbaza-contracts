@@ -36,8 +36,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
       `Token ${token.symbol} created through FanTokenFactory on: ${tokenAddress}`
     );
     // TEMPORARY
-    tx = await vestingWalletFactory.createVestingWallet(tokenAddress, beneficiary, Math.ceil(Date.now() / 1000)
-      , VESTING_WALLETS[key].schedule)
+    tx = await vestingWalletFactory.createVestingWallet(tokenAddress, beneficiary, VESTING_WALLETS[key].start, VESTING_WALLETS[key].schedule)
     receipt = await tx.wait();
     event = receipt.events?.find(
       (event) => event.event === "VestingWalletCreated"

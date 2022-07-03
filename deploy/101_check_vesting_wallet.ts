@@ -19,10 +19,10 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     const cliff = await vestingWallet.cliff()
     console.log(`Cliff: ${cliff}`)
 
-    await ethers.provider.send("evm_increaseTime", [2628288 * 3]);
-    await ethers.provider.send("evm_mine", []);
-    console.log("After 3 months")
-    await vestingWallet.release()
+    // await ethers.provider.send("evm_increaseTime", [2628288 * 3]);
+    // await ethers.provider.send("evm_mine", []);
+    // console.log("After 3 months")
+    // await vestingWallet.release()
 
     const balance = await fanToken.balanceOf(beneficiary)
     console.log(`Balance of beneficiary after 3 months: ${ethers.utils.formatEther(balance)}`)
