@@ -1,22 +1,16 @@
-require("dotenv").config();
+import "dotenv/config";
 
-require("@nomiclabs/hardhat-etherscan");
-require("@nomiclabs/hardhat-waffle");
-require("hardhat-gas-reporter");
-require("solidity-coverage");
+import { HardhatUserConfig } from "hardhat/types";
 
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
-  const accounts = await hre.ethers.getSigners();
+import "hardhat-deploy";
+import "hardhat-gas-reporter";
+import "@typechain/hardhat";
+import "@nomiclabs/hardhat-ethers";
+import "@nomiclabs/hardhat-waffle";
+import "@nomiclabs/hardhat-etherscan";
+import "solidity-coverage";
 
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
-module.exports = {
+const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.15",
     settings: {
@@ -25,6 +19,11 @@ module.exports = {
         runs: 200,
       },
     },
+  },
+  namedAccounts: {
+    deployer: 0,
+    beneficiary: 1,
+    unauthorized: 2,
   },
   networks: {
     hardhat: {
@@ -37,6 +36,10 @@ module.exports = {
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
+  typechain: {
+    outDir: "typechain",
+    target: "ethers-v5",
+  },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
@@ -45,3 +48,5 @@ module.exports = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
+
+export default config;

@@ -1,22 +1,26 @@
 module.exports = {
+  root: true,
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
+    sourceType: "module", // Allows for the use of imports
+  },
   env: {
     browser: false,
-    es2021: true,
-    mocha: true,
+    commonjs: true,
     node: true,
+    mocha: true,
   },
+  plugins: ["@typescript-eslint"],
   extends: [
-    "standard",
-    "plugin:prettier/recommended",
-    "plugin:node/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
-  parserOptions: {
-    ecmaVersion: 12,
+  rules: {
+    "no-empty": "off",
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-var-requires": "off",
   },
-  overrides: [
-    {
-      files: ["hardhat.config.js"],
-      globals: { task: true },
-    },
-  ],
 };
