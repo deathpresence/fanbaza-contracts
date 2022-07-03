@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { CONTRACTS, TOKENS, VESTING_WALLETS } from "../scripts/constants";
-import { FanTokenFactory__factory, VestingWalletFactory__factory } from "../typechain/index";
+import { FanTokenFactory__factory, FanToken__factory, VestingWalletFactory__factory } from "../typechain/index";
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deployments, getNamedAccounts, ethers } = hre;
@@ -45,6 +45,15 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     console.log(
       `Vesting walet in ${token.symbol} token for ${VESTING_WALLETS[key].beneficiary} created through VestingWalletFactory on: ${vestingWalletAddress}`
     );
+
+    const fanToken = FanToken__factory.connect(tokenAddress, signer)
+    const deployerBalance = await fanToken.balanceOf(deployer)
+    console.log(`Balance of the deployer: ${ethers.utils.formatEther(deployerBalance)}`)
+
+    await fanToken.transfer(vestingWalletAddress, ethers.utils.parseEther("57000000"))
+
+    const vestingBalance = await fanToken.balanceOf(vestingWalletAddress)
+    console.log(`${ethers.utils.formatEther(vestingBalance)} ${token.symbol} transfered to vesting wallet: ${vestingWalletAddress}`)
 
   }
 };
