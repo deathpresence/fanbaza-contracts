@@ -19,15 +19,15 @@ contract FanTokenFactory is Ownable {
     }
 
     function createFanToken(
-        string calldata _name,
-        string calldata _symbol,
-        uint256 _amount,
-        address _to
+        string calldata name,
+        string calldata symbol,
+        uint256 amount,
+        address to
     ) external onlyOwner returns (address) {
-        if (_to == address(0)) {
-            _to = owner();
+        if (to == address(0)) {
+            to = owner();
         }
-        FanToken newToken = new FanToken(_name, _symbol, _amount, _to);
+        FanToken newToken = new FanToken(name, symbol, amount, to);
 
         address tokenAddress = address(newToken);
         _tokens.push(tokenAddress);
@@ -35,5 +35,27 @@ contract FanTokenFactory is Ownable {
         emit TokenCreated(tokenAddress, newToken.totalSupply());
 
         return tokenAddress;
+    }
+
+    function addFanToken(address _token) external onlyOwner {
+        require(
+            _token != address(0),
+            "FanTokenFactory: token address cannot be zero"
+        );
+
+        _tokens.push(_token);
+    }
+
+    function removeFanToken(uint256 index) external onlyOwner {
+        require(
+            index <= _tokens.length,
+            "FanTokenFactory: index is out of range"
+        );
+
+        for (uint256 i = index; i < _tokens.length - 1; i++) {
+            _tokens[i] = _tokens[i + 1];
+        }
+
+        _tokens.pop();
     }
 }
