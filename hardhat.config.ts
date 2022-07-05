@@ -9,6 +9,10 @@ import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-etherscan";
 import "solidity-coverage";
 
+export function accounts(): { privateKey: string, balance: string }[] {
+  return [{ privateKey: process.env.PRIVATE_KEY !== undefined ? process.env.PRIVATE_KEY : "", balance: "1000000000000000000" }];
+}
+
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.15",
@@ -27,12 +31,13 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       initialBaseFeePerGas: 0,
+      accounts: accounts(),
+
     },
     mainnet: {
       chainId: 56,
       url: "https://bsc-dataseed.binance.org/",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
   typechain: {

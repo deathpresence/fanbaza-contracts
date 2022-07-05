@@ -10,6 +10,7 @@
     "typechain": "hardhat typechain",
     "node": "hardhat node",
     "deploy:hardhat": "hardhat --network hardhat deploy",
+    "deploy:mainnet": "hardhat --network mainnet deploy",
     "test": "npx hardhat test"
   },
   "author": "",

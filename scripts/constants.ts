@@ -21,13 +21,13 @@ export const TOKENS: Tokens = {
     name: "Davlet Yagshy Token",
     symbol: "DVT",
     supply: 100000000,
-    to: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    to: "0x2D00763b93d5bFFe2Aa36f05fEe3e44EF4533b87",
   },
 };
 
 export const VESTING_WALLETS: Record<string, any> = {
   DAVLET: {
-    beneficiary: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    beneficiary: "0x96C8cD732a30b038f01FCefA54dfC8feA0640Aa6",
     start: 1657011600,
     schedule: [
       0, 0, 833, 0, 0, 833, 0, 0, 833, 0, 0, 833,
